@@ -1,0 +1,38 @@
+import torch.nn as nn
+
+
+class CIFARNet(nn.Module):
+    
+    def __init__(self):
+        super().__init__()
+        self.con1 = nn.Sequential(nn.Conv2d(3, 6, 3, padding=1), nn.ReLU())
+        self.pool = nn.MaxPool2d(2,2, padding=1)
+        self.con2 = nn.Sequential(nn.Conv2d(6, 16, 3, padding=1), nn.ReLU())
+        self.con3 = nn.Sequential(nn.Conv2d(16, 32, 3, padding=1), nn.ReLU())
+        self.con4 = nn.Sequential(nn.Conv2d(32, 64, 3, padding=1), nn.ReLU())
+        
+        self.ll1 = nn.Sequential(nn.Linear(64*3*3, 400), nn.ReLU())
+        self.ll2 = nn.Sequential(nn.Linear(400, 280), nn.ReLU())
+        
+        self.ll3 = nn.Sequential(nn.Linear(280, 160), nn.ReLU())
+        self.ll4 = nn.Sequential(nn.Linear(160, 80), nn.ReLU())
+       
+
+        
+        self.last_layer = nn.Linear(80, 10)
+    
+    def forward(self, x):
+        x = self.pool(self.con1(x))
+        x = self.pool(self.con2(x))
+        x = self.pool(self.con3(x))
+        x = self.pool(self.con4(x))
+      
+        x = x.reshape(-1, 3*3*64)
+        
+        x= self.ll1(x)
+        x= self.ll2(x)
+        x= self.ll3(x)
+        x= self.ll4(x)
+        
+        x = self.last_layer(x)
+        return x
