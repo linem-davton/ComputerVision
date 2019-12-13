@@ -1,0 +1,16 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_cms(cms, cmap='viridis',xticks_rotation='horizontal'):
+    fig, ax = plt.subplots()
+    n_classes = cms.shape[0]
+    im_ = ax.imshow(cms, interpolation='nearest', cmap=cmap)
+    cmap_min, cmap_max = im_.cmap(0), im_.cmap(256)
+    fig.colorbar(im_, ax=ax)
+    ax.set(xticks=np.arange(n_classes),
+               yticks=np.arange(n_classes),
+               ylabel="True label",
+               xlabel="Predicted label")
+    ax.set_ylim((n_classes - 0.5, -0.5))
+    plt.setp(ax.get_xticklabels(), rotation=xticks_rotation)
+    pass
