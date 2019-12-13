@@ -39,6 +39,7 @@ total_loss = nn.CrossEntropyLoss()
 param = net.parameters()
 optimizer = optim.Adam(params=param,lr=0.001)
 
+
 n_epochs=3
 n_iterations=0
 
